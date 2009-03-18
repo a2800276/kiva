@@ -5,21 +5,33 @@ require 'simplehttp'
 module Kiva
 
   def Kiva.execute url, query=nil
-puts url
-pp(query) if query
+    #puts url
+    #pp(query) if query
     SimpleHttp.get(url, query)
+  end
+  
+  def Kiva.fill instance, hash
+
+    hash.keys.each { |key|
+      meth = (key+"=").to_sym
+      next unless instance.respond_to? meth
+
+      if ["loan", "lender"].include?(key) 
+        value = "loan"==key ? Kiva::Loan.new : Kiva::Lender.new
+        Kiva.fill value, hash[key]
+      else
+        value = hash[key]
+      end
+
+      instance.__send__ meth, value
+    }
   end
 
   def Kiva.populate clazz, array
     res = []
-    array.each{ |thingie|
+    array.each{ |hash|
       instance = clazz.new
-      thingie.keys.each{|key|
-        meth = (key+"=").to_sym
-        if instance.respond_to? meth
-          instance.__send__ meth, thingie[key]
-        end
-      }
+      Kiva.fill instance, hash
       res.push instance 
     }
     res
@@ -41,14 +53,15 @@ pp(query) if query
     attr_accessor :image
     attr_accessor :location
     attr_accessor :sector
-    
     attr_accessor :basket_amount
-
+    
+     
     
     class << self
-      LOAD_FOR_LENDER = "http://api.kivaws.org/v1/lenders/%s/loans.json?"
+      
       KEY = "loans"
-
+      
+      LOAD_FOR_LENDER = "http://api.kivaws.org/v1/lenders/%s/loans.json?"
       LOAD_NEWEST     = "http://api.kivaws.org/v1/loans/newest.json?"
       LOAD            = "http://api.kivaws.org/v1/loans/%s.json"
       SEARCH          = "http://api.kivaws.org/v1/loans/search.json"
@@ -97,9 +110,6 @@ pp(query) if query
               l.uid
             } if ids[0].is_a?(Lender)
             ids = ids.join(",")
-          else
-            puts "wait a minute"
-            
         end
        
         url = LOAD_FOR_LENDER % ids
@@ -417,9 +427,9 @@ if $0 == __FILE__
 #  }
   #user = Kiva::Lender.load("tim9918") 
   #pp user
-  #user = "tim9918"
+  user = "tim9918"
   #loans = Kiva::Loan.load_for_lender(user)
-
+  #pp loans
   #pp Kiva::LendingAction.load
   #pp Kiva::Lender.load_for_loan 95693
   #pp Kiva::JournalEntry.load 14077
