@@ -1,0 +1,33 @@
+= kiva -- wrapper to the kiva rest API
+
+You can find more information about the API here[http://developers.wiki.kiva.org/KivaAPI]
+
+== Installing
+
+You have to deal with this yourself. Everything seems to work, but it still needs to be
+tested and gemified, made beautiful and all the other boring stuff.
+
+
+
+== Mailing List
+
+In case you discover bugs, spelling errors, offer suggestions for
+improvements or would like to help out with the project, you can contact
+me directly (tim@kuriositaet.de).
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=
