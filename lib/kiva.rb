@@ -1,7 +1,6 @@
 require 'json'
-require 'pp'
 require 'simplehttp'
-require 'time'
+
 
 module Kiva
 
@@ -53,6 +52,7 @@ module Kiva
         Kiva._fill value, hash[key]
       elsif key =~ /date/
         begin
+          require 'time'
           value = Time.parse(hash[key], -1)
         rescue
           value = hash[key]

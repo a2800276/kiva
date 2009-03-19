@@ -72,7 +72,7 @@ class TestKiva < Test::Unit::TestCase
        "town"=>"Isfara"}, loan[0].location)
      assert_equal("Saboat Artykova", loan[0].name)
      assert_equal(47, loan[0].partner_id)
-     assert_equal("Thu Mar 19 02:10:07 UTC 2009", loan[0].posted_date.to_s)
+     assert_equal(Time.parse("Thu Mar 19 02:10:07 UTC 2009"), loan[0].posted_date)
      assert_equal("Retail", loan[0].sector)
      assert_equal("funded", loan[0].status)
      assert_equal("To expand the business", loan[0].use)
@@ -130,7 +130,7 @@ class TestKiva < Test::Unit::TestCase
     assert_equal(16958, comments[0].id)
     assert_equal("Janet and Marty", comments[0].author)
     assert_equal("Dear Dona Isabel,\r\n\r\n", comments[0].body)
-    assert_equal("Wed Jul 18 16:52:53 UTC 2007", comments[0].date.to_s)
+    assert_equal(Time.parse("Wed Jul 18 16:52:53 UTC 2007"), comments[0].date)
     assert_equal("San Francisco, California, USA", comments[0].whereabouts)
   end
 
@@ -160,7 +160,7 @@ class TestKiva < Test::Unit::TestCase
   def test_release
     release = Kiva::Release.load
     assert_equal("13775", release.id)
-    assert_equal("Thu Mar 19 01:20:37 UTC 2009", release.date.to_s)
+    assert_equal(Time.parse("Thu Mar 19 01:20:37 UTC 2009"), release.date)
   end
 
   
