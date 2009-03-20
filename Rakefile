@@ -80,8 +80,8 @@ spec = Gem::Specification.new do |s|
 	s.requirements << "none"
 	s.require_path = 'lib'
 	s.description = LONG_DESC
-	s.add_dependancy "json"
-	s.add_dependancy "simplehttp"
+	s.add_dependency "json"
+	s.add_dependency "simplehttp"
 end
 
 # Adding a new GemPackageTask adds a task named `package`, which generates
