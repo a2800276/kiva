@@ -4,8 +4,16 @@ You can find more information about the API here[http://developers.wiki.kiva.org
 
 == Installing
 
-You have to deal with this yourself. Everything seems to work, but it still needs to be
-tested and gemified, made beautiful and all the other boring stuff.
+You should be able to `gem install kiva`. Alternatively, download a distribution
+at rubyforge: http://rubyforge.org/frs/?group_id=8034 
+
+Finally you can grab the sources from the rubyforge or github  repositories:
+
+git clone git://rubyforge.org/kiva.git
+
+or
+
+http://github.com/a2800276/kiva/tree/master#
 
 
 
