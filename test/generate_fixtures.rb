@@ -4,6 +4,7 @@ require 'pp'
 require File.dirname(__FILE__) + '/../lib/kiva'
 
 module Kiva
+	# Modified `execute` method to generate fixtures!
   def Kiva.execute url, query=nil
     result = SimpleHttp.get(url, query)
     key = [url, query]

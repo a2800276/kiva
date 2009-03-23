@@ -3,11 +3,12 @@ require 'pp'
 require File.dirname(__FILE__) + '/../lib/kiva'
 
 
-# Patch up execute method to use dummies and not connect to real web api.
 module Kiva
   fixtures = File.open(File.dirname(__FILE__)+"/fixtures.rbf").readlines.join
   $fixtures = eval(fixtures)
 
+	# Modified `execute` method for TESTING!
+  # Patch up execute method to use dummies and not connect to real web api.
   def Kiva.execute url, query=nil
     key = [url, query]
     $fixtures[key]

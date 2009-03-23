@@ -1,12 +1,22 @@
 require 'json'
 require 'simplehttp'
 
+# The Kiva module is a namespace to contain all the classes and contains
+# some utility functions to handle json and http.
 
 module Kiva
 
   #
-  # central location to perform webservice query
-  # hook into here for error handling, etc.
+  # This is central location where the webservice query
+  # is performed. You probably won't need to change this, but in case you
+  # you need special error handling or some other behaviour, you can
+  # modify everything in one place HERE.
+  # 
+  # For examples on how to do this, have a look at the files: `test/generate_fixtures.rb`
+  # and `test/test_kiva.rb`.
+  #
+  # ===Error Handling
+  #
   # currently the normal HttpExceptions are just passed
   # on, which should be ok for starters.
   #
@@ -88,7 +98,18 @@ module Kiva
     res
   end
 
-
+  # Represents a Loan (whoda guessed.) The accessible parameters are all
+  # all there is to this. Depending on how a particular instance of loan
+  # was loaded, not all of the attributes need have a value, so remember
+  # to check for +nil+.
+  #
+  # Use one of the class functions:
+  # * +load+
+  # * +load_for_lender+
+  # * +load_newest+
+  # * +search+
+  #
+  # to load loans from Kiva.
   class Loan
     attr_accessor :id
     attr_accessor :status
@@ -122,14 +143,15 @@ module Kiva
       #
       # Returns details for one or more loans. 
       #
-      # PARAMS
-      #   `ids` : an instance of `Loan` or a loan id or an array `Loan`s/loan IDs
+      # ====Paramaters
+      # +ids+ : an instance of +Loan+ or a loan id or an array +Loan+'s
+      # or loan id's
       #
-      # RETURNS
-      #   an array of `Loan` instances
+      # ====Returns
+      # an array of +Loan+ instances
       #
-      # CORRESPONDS
-      #  http://developers.wiki.kiva.org/KivaAPI#loans/ltidsgt 
+      # ====Corresponds
+      # http://developers.wiki.kiva.org/KivaAPI#loans/ltidsgt
       #
       def load ids
         case ids
@@ -153,14 +175,14 @@ module Kiva
       #
       # Search for loans matching specific criteria. 
       #
-      # PARAMS
-      #   `filter` : an instance of `Filter` describing the search parameter 
+      # ====Parameters
+      # +filter+ : an instance of +Filter+ describing the search parameter 
       #
-      # RETURNS
-      #   an array of `Loan` instances
+      # ====Returns
+      # an array of +Loan+ instances
       #
-      # CORRESPONDS
-      #  http://developers.wiki.kiva.org/KivaAPI#loans/search 
+      # ====Corresponds
+      # http://developers.wiki.kiva.org/KivaAPI#loans/search 
       #
       def search filter, page=nil
         url = SEARCH
@@ -178,14 +200,14 @@ module Kiva
       #
       # Returns the most recent fundraising loans. 
       #
-      # PARAMS
-      #   `page` : the page position
+      # ====Parameters
+      # +page+ : the page position
       #
-      # RETURNS
-      #   an array of `Loan` instances
+      # ====Returns
+      # an array of +Loan+ instances
       #
-      # CORRESPONDS
-      #   http://developers.wiki.kiva.org/KivaAPI#loans/newest
+      # ====Corresponds
+      # http://developers.wiki.kiva.org/KivaAPI#loans/newest
       #
       def load_newest page=nil
         url = LOAD_NEWEST
@@ -199,18 +221,18 @@ module Kiva
      
 
       # 
-      # Returns loans sponsored by Lender
+      # Returns loans sponsored by a specified lender
       # 
-      # PARAMS
-      # `id` : id of lender or instance of `Lender`
-      # `sort_by`: one of :newest, :oldest
-      # `page` : page position
+      # ====Parameters
+      # * +id+ : id of lender or instance of +Lender+
+      # * +sort_by+: one of <code>:newest, :oldest</code>
+      # * +page+ : page position
       #
-      # RETURNS
-      #   array of `Loan`s
+      # ====Returns
+      # array of +Loan+'s
       #
-      # CORRESPONDS
-      #   http://developers.wiki.kiva.org/KivaAPI#lenders/ltlenderidgt/loans
+      # ====Corresponds
+      # http://developers.wiki.kiva.org/KivaAPI#lenders/ltlenderidgt/loans
       #
 
       def load_for_lender id, sort_by=nil, page=nil
@@ -230,6 +252,17 @@ module Kiva
     end
 
   end
+  
+  # Represents a Lender (whoda guessed.) The accessible parameters are all
+  # all there is to this. Depending on how a particular instance of loan
+  # was loaded, not all of the attributes need have a value, so remember
+  # to check for +nil+.
+  #
+  # Use one of the class functions:
+  # * +load+
+  # * +load_for_loan+
+  #
+  # to load lender information from Kiva.
 
   class Lender
     # url = "http://api.kivaws.org/v1/lenders/%s.json"
@@ -257,14 +290,14 @@ module Kiva
       #
       # List public lenders of a loan.
       #
-      # PARAMS
-      # `loan` : a loan id or an instance of `Loan` 
+      # ====Parameters
+      # +loan+ : a loan id or an instance of +Loan+ 
       #
-      # RETURNS
-      #   an array of `Lender` instances.
+      # ====Returns
+      # an array of +Lender+ instances.
       #
-      # CORRESPONDS TO
-      #   http://developers.wiki.kiva.org/KivaAPI#loans/ltidgt/lenders
+      # ====Corresponds
+      # http://developers.wiki.kiva.org/KivaAPI#loans/ltidgt/lenders
       #
       def load_for_loan loan, page = nil
         loan = loan.id if loan.is_a?(Loan)
@@ -283,14 +316,14 @@ module Kiva
       #
       # Load details for one or more Lenders.
       #
-      # PARAMS
-      # `ids` : a lender id or and array of id's
+      # ====Parameters
+      # +ids+ : a lender id or and array of id's
       #
-      # RETURNS
-      #   an array of `Lender` instances.
+      # ====Returns
+      # an array of +Lender+ instances.
       #
-      # CORRESPONDS TO
-      #   http://developers.wiki.kiva.org/KivaAPI#lenders/ltlenderidsgt
+      # ====Corresponds
+      # http://developers.wiki.kiva.org/KivaAPI#lenders/ltlenderidsgt
       #
       def load ids
         ids  = ids.join(",") if ids.is_a?(Array)
@@ -305,6 +338,10 @@ module Kiva
 
   end
 
+  # +LendingAction+ are basically a showcase of recent Kiva activity.
+  # Use the class method +load+ to loan the last 100 lenders and the
+  # loan they sponsored.
+
   class LendingAction
     attr_accessor :id
     attr_accessor :date
@@ -318,11 +355,11 @@ module Kiva
       #
       # Returns the last 100 public actions from Kiva.
       #
-      # RETURNS
-      #   an array of `LendingAction` instances
+      # ====Returns
+      # an array of +LendingAction+ instances
       #
-      # CORRESPONDS
-      #   http://developers.wiki.kiva.org/KivaAPI#lendingactions/recent
+      # ====corresponds
+      # http://developers.wiki.kiva.org/KivaAPI#lendingactions/recent
       #
       def load 
         raw = Kiva.execute(LOAD_RECENT)
@@ -333,7 +370,11 @@ module Kiva
       end
     end
   end
-
+  
+  # Journal entries are attached to loans. Using the class method +load+
+  # you can retrieve all entries attached to a particular loan.
+  #
+  
   class JournalEntry
     attr_accessor :id
     attr_accessor :body
@@ -345,6 +386,22 @@ module Kiva
     attr_accessor :image
     attr_accessor :recommendation_count
 
+    #
+    # Retrieve an array of +Comment+ instances
+    # associated with this entry. N.B. this leads to
+    # a further network call.
+    def comments
+      unless @comments 
+        return nil if id.is_nil?
+        if @comment_count != 0
+          @comments = Comment.load(this)
+        else
+          @commetns = []
+        end
+      end
+      @comments
+    end
+
     class << self
       KEY  = "journal__entries"
       LOAD = "http://api.kivaws.org/v1/loans/%s/journal_entries.json?"
@@ -352,14 +409,14 @@ module Kiva
       #
       # Load journal entries for a loan. 
       #
-      # PARAMS
-      # `id` : a loan id or an instance of `Loan`
+      # ====Parameters
+      # +id+ : a loan id or an instance of +Loan+
       #
-      # RETURNS
-      #   an array of `JournalEntry` instances.  
+      # ====Returns
+      # an array of +JournalEntry+ instances.  
       #
-      # CORRESPONDS TO
-      #   http://developers.wiki.kiva.org/KivaAPI#loans/ltidgt/journalentries
+      # ====Corresponds 
+      # http://developers.wiki.kiva.org/KivaAPI#loans/ltidgt/journalentries
       #
       def load id, page = nil, include_bulk = nil
         id = id.id if id.is_a? Loan
@@ -375,7 +432,8 @@ module Kiva
       end 
     end
   end
-
+  
+  # User comment made in response to a JournalEntry.
   class Comment
     # http://api.kivaws.org/v1/journal_entries/<id>/comments.json
     attr_accessor :body
@@ -391,12 +449,14 @@ module Kiva
       #
       # Loads an array of comments for a JournalEntry.
       #
-      # `id`  : the numerical id of a Journal Entry or an instance of
-      #        the class `JournalEntry`
-      # `page`: which page of comments to load, default is the first.
+      # ====Parameters
+      # * +id+  : the numerical id of a Journal Entry or an instance of the class +JournalEntry+
+      # * +page+: which page of comments to load, default is the first.
       #
-      # Corresponds to the API:
+      # ====Returns
+      # array of +Comments+
       #
+      # ====Corresponds
       # http://developers.wiki.kiva.org/KivaAPI#journalentries/ltidgt/comments
       #
       def load id, page=nil
@@ -412,6 +472,7 @@ module Kiva
     end
   end
 
+  # Kiva field Partner
   class Partner
     attr_accessor :start_date
     attr_accessor :rating
@@ -432,14 +493,14 @@ module Kiva
       #
       # Load an alphabetically sorted list of partners.
       #
-      # PARAMS
-      #   `page`: page position 
+      # ====Parameters
+      # +page+: page position 
       #
-      # RETURNS
-      #   an array of `Partner` instances
+      # ====Returns
+      # an array of +Partner+ instances
       #
-      # CORRESPONDS
-      #   http://developers.wiki.kiva.org/KivaAPI#partners 
+      # ====Corresponds
+      # http://developers.wiki.kiva.org/KivaAPI#partners 
       #
 
       def load page=nil
@@ -452,6 +513,8 @@ module Kiva
     end
   end
 
+  # Release information concerning the webapi. This is not the
+  # release number of the ruby library!
   class Release
 
     attr_accessor :date
@@ -461,12 +524,11 @@ module Kiva
       #
       # Returns release information 
       #
+      # ====Returns
+      #   an array of +Partner+ instances
       #
-      # RETURNS
-      #   an array of `Partner` instances
-      #
-      # CORRESPONDS
-      #   http://developers.wiki.kiva.org/KivaAPI#releases/api/current 
+      # ====Corresponds
+      # http://developers.wiki.kiva.org/KivaAPI#releases/api/current 
       #
      
       def load
@@ -477,6 +539,7 @@ module Kiva
     end
   end
 
+  # Templates which may be used to construct html image tags.
   class Templates
     attr_accessor :id
     attr_accessor :pattern
@@ -489,100 +552,120 @@ module Kiva
     end
   end
 
+  # Filter to be used in order to describe the intended search results
+  # of <code>Loan.search</code>
   class Filter
     attr_accessor :params
+
+    # Create a new instance of filter with no attributes.
     def initialize
       @params = {}
     end
     
-    #sort_by
+    # sort_by
     def popularity
       @params["sort_by"]="popularity"
       return self
     end
+    # sort_by
     def loan_amount
       @params["sort_by"]="loan_amount"
       return self
     end
+    # sort_by
     def oldest
       @params["sort_by"]="oldest"
       return self
     end
+    # sort_by
     def expiration
       @params["sort_by"]="expiration"
       return self
     end
+    # sort_by
     def newest
       @params["sort_by"]="newest"
       return self
     end
+    # sort_by
     def amount_remaining
       @params["sort_by"]="amount_remaining"
       return self
     end
+    # sort_by
     def repayment_term
       @params["sort_by"]="repayment_term"
       return self
     end
 
-    # GENDER
+    # restrict to male loan recipients
     def male
       @params["gender"]="male"
       return self
     end
+    # restrict to female loan recipients
     def female
       @params["gender"]="female"
       return self
     end
 
-    # STATUS
+    # restrict status
     def fundraising
       @params["status"]="fundraising"
       return self
     end
+    # restrict status
     def funded
       @params["status"]="funded"
       return self
     end
+    # restrict status
     def in_repayment
       @params["status"]="in_repayment"
       return self
     end
+    # restrict status
     def paid
       @params["status"]="paid"
       return self
     end
+    # restrict status
     def defaulted
       @params["status"]="defaulted"
       return self
     end
      
-    #REGION
-
+    #restrict region
     def north_america
       @params["region"]="na"
       return self
     end
+    #restrict region
     def central_america
       @params["region"]="ca"
       return self
     end
+    #restrict region
     def south_america
       @params["region"]="sa"
       return self
     end
+    #restrict region
     def africa
       @params["region"]="af"
       return self
     end
+    #restrict region
     def asia
       @params["region"]="as"
       return self
     end
+    #restrict region
     def middle_east
       @params["region"]="me"
       return self
     end
+    #restrict region
     def eastern_europe
       @params["region"]="ee"
       return self
