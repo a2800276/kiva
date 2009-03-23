@@ -1,6 +1,79 @@
 = kiva -- wrapper to the kiva rest API
 
-You can find more information about the API here[http://developers.wiki.kiva.org/KivaAPI]
+This is a wrapper to the Kiva Web API. You can find more information
+about the API here[http://developers.wiki.kiva.org/KivaAPI].
+
+
+== Example
+
+The following is an example of retrieving the last 20 loans on Kiva.
+This is about as difficult as things get:
+
+    require 'kiva'
+    
+    newest = Kiva::Loan.load_newest
+    newest.each{ |loan|
+      puts "#{loan.name} loaned $#{loan.funded_amount} for
+			#{loan.activity} in #{loan.location["country"]}"
+    }
+
+Running the above script yields something similar to the following:
+
+    $ ruby -rubygems examples/newest.rb 
+
+    Angela Okosun loaned $225 for Cement in Nigeria
+    Vitaliy Konovalenko loaned $1650 for Retail in Ukraine
+		(...)
+    Thi Thoa Do's Group loaned $300 for Food Production/Sales in Viet Nam
+    Thi Hoa Nguyen loaned $900 for General Store in Viet Nam
+
+
+== Prerequisites
+
+Kiva doesn't require an account or an API key in order to use their API,
+so there are no prerequisites to using it. This library does depend on
+SimpleHTTP[http://simplehttp.rubyforge.org/] and
+json[http://json.rubyforge.org/] to handle the web api. These should be
+installed automatically if you used +gem+ to install the library, else,
+you'll need to install them manually.
+
+
+== Basic Usage
+
+This library consists of number of classes modelling the data
+objects which the web api returns. Each class is similar, consisting of
+class methods used to call webapi functions and attributes which provide
+access to the (unpacked) json data the webapi returns.
+
+These classes are (in no particular order) :
+
+* <code>Kiva::Loan</code>
+* <code>Kiva::Lender</code>
+* <code>Kiva::LendingAction</code>
+* <code>Kiva::Partner</code>
+* <code>Kiva::JournalEntry</code>
+* <code>Kiva::Comment</code>
+* <code>Kiva::Release</code>
+
+Each of these classes has attributes containing the data returned from
+the web api. For example, a +Comment+ has the attributes:
+
+* <code>author</code>
+* <code>body</code>
+* <code>date</code>
+* <code>id</code>
+* <code>whereabouts</code>
+
+Each class has one or more class methods, corresponding to web api
+calls, which may be used to create and load instances of the class. For
+example, +Loan+ has the following list of class methods:
+
+* +load+ : loans/&lt;ids&gt;[http://developers.wiki.kiva.org/KivaAPI#loans/ltidsgt]
+* +load_for_lender+ : loans/&lt;id&gt;/lenders[http://developers.wiki.kiva.org/KivaAPI#loans/ltidgt/lenders]
+* +load_newest+ : loans/newest[http://developers.wiki.kiva.org/KivaAPI#loans/newest]
+* +search+ : loans/search[http://developers.wiki.kiva.org/KivaAPI#loans/search]
+
+
 
 == Installing
 
