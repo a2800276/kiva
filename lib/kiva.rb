@@ -127,6 +127,10 @@ module Kiva
     attr_accessor :location
     attr_accessor :sector
     attr_accessor :basket_amount
+
+    attr_accessor :borrower_count
+    attr_accessor :loan_amount
+
     
      
     
@@ -279,6 +283,8 @@ module Kiva
     attr_accessor :whereabouts
     attr_accessor :image
     attr_accessor :member_since
+    attr_accessor :personal_url
+
     
     class << self
       KEY  = "lenders"
