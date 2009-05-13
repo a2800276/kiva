@@ -133,15 +133,15 @@ module Kiva
 
     
      
+    KEY = "loans"
+    
+    LOAD_FOR_LENDER = "http://api.kivaws.org/v1/lenders/%s/loans.json?"
+    LOAD_NEWEST     = "http://api.kivaws.org/v1/loans/newest.json?"
+    LOAD            = "http://api.kivaws.org/v1/loans/%s.json"
+    SEARCH          = "http://api.kivaws.org/v1/loans/search.json"
     
     class << self
       
-      KEY = "loans"
-      
-      LOAD_FOR_LENDER = "http://api.kivaws.org/v1/lenders/%s/loans.json?"
-      LOAD_NEWEST     = "http://api.kivaws.org/v1/loans/newest.json?"
-      LOAD            = "http://api.kivaws.org/v1/loans/%s.json"
-      SEARCH          = "http://api.kivaws.org/v1/loans/search.json"
       
 
       #
@@ -286,11 +286,11 @@ module Kiva
     attr_accessor :personal_url
 
     
-    class << self
-      KEY  = "lenders"
+    KEY  = "lenders"
       
-      LOAD = "http://api.kivaws.org/v1/lenders/%s.json"
-      LOAD_FOR_LOAN = "http://api.kivaws.org/v1/loans/%s/lenders.json?"
+    LOAD = "http://api.kivaws.org/v1/lenders/%s.json"
+    LOAD_FOR_LOAN = "http://api.kivaws.org/v1/loans/%s/lenders.json?"
+    class << self
      
       
       #
@@ -354,9 +354,10 @@ module Kiva
     attr_accessor :lender
     attr_accessor :loan
 
+    KEY = "lending_actions"
+    LOAD_RECENT = "http://api.kivaws.org/v1/lending_actions/recent.json"
+
     class << self
-      KEY = "lending_actions"
-      LOAD_RECENT = "http://api.kivaws.org/v1/lending_actions/recent.json"
 
       #
       # Returns the last 100 public actions from Kiva.
@@ -408,9 +409,9 @@ module Kiva
       @comments
     end
 
+    KEY  = "journal__entries"
+    LOAD = "http://api.kivaws.org/v1/loans/%s/journal_entries.json?"
     class << self
-      KEY  = "journal__entries"
-      LOAD = "http://api.kivaws.org/v1/loans/%s/journal_entries.json?"
 
       #
       # Load journal entries for a loan. 
@@ -448,9 +449,9 @@ module Kiva
     attr_accessor :id
     attr_accessor :whereabouts
 
+    KEY = "comments"
+    URL = "http://api.kivaws.org/v1/journal_entries/%s/comments.json?"
     class << self
-      KEY = "comments"
-      URL = "http://api.kivaws.org/v1/journal_entries/%s/comments.json?"
       
       #
       # Loads an array of comments for a JournalEntry.
@@ -492,9 +493,9 @@ module Kiva
     attr_accessor :countries
     attr_accessor :image
   
+    KEY  = "partners"
+    LOAD = "http://api.kivaws.org/v1/partners.json?"
     class << self
-      KEY  = "partners"
-      LOAD = "http://api.kivaws.org/v1/partners.json?"
       
       #
       # Load an alphabetically sorted list of partners.
