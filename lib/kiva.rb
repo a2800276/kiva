@@ -409,7 +409,7 @@ module Kiva
       @comments
     end
 
-    KEY  = "journal__entries"
+    KEY  = "journal_entries"
     LOAD = "http://api.kivaws.org/v1/loans/%s/journal_entries.json?"
     class << self
 
