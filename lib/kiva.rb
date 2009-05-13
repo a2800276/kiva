@@ -390,7 +390,7 @@ module Kiva
     attr_accessor :author
     attr_accessor :subject
     attr_accessor :bulk
-    attr_accessor :image
+    #attr_accessor :image
     attr_accessor :recommendation_count
 
     #
