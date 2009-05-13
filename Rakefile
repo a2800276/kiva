@@ -9,7 +9,7 @@ require "rubygems"
 
 SHORTNAME	='kiva'	# this should be the rubyforge project name
 DESC		= 'wrapper to kiva api'
-PKG_VERSION 	='0.0.2'
+PKG_VERSION 	='0.1.0'
 LONG_DESC	= <<END_DESC
 	Wrapper to the kiva web api. The API is described in
 	more detail here:
@@ -77,11 +77,16 @@ spec = Gem::Specification.new do |s|
 	s.name = SHORTNAME
 	s.version = PKG_VERSION
 	s.files = PKG_FILES
+  s.author = "Tim Becker <tim@kuriositaet.de>"
+  s.email =  "tim@kuriositaet.de"
+  s.homepage = "http://kiva.rubyforge.org"
+  s.rubyforge_project = "kiva"
 	s.requirements << "none"
 	s.require_path = 'lib'
 	s.description = LONG_DESC
 	s.add_dependency "json"
 	s.add_dependency "simplehttp"
+  s.has_rdoc = true
 end
 
 # Adding a new GemPackageTask adds a task named `package`, which generates
