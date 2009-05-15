@@ -400,9 +400,9 @@ module Kiva
     # a further network call.
     def comments
       unless @comments 
-        return nil if id.is_nil?
+        return nil if id.nil?
         if @comment_count != 0
-          @comments = Comment.load(this)
+          @comments = Comment.load(self)
         else
           @commetns = []
         end
