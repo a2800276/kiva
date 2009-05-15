@@ -180,7 +180,7 @@ module Kiva
       # Search for loans matching specific criteria. 
       #
       # ====Parameters
-      # +filter+ : an instance of +Filter+ describing the search parameter 
+      # +filter+ : an instance of +LoanFilter+ describing the search parameter 
       #
       # ====Returns
       # an array of +Loan+ instances
@@ -190,7 +190,8 @@ module Kiva
       #
       def search filter, page=nil
         url = SEARCH
-        if filter && page
+        filter ||= LoanFilter.new
+        if page
           filter["page"] = page
         end
         
@@ -390,7 +391,7 @@ module Kiva
     attr_accessor :author
     attr_accessor :subject
     attr_accessor :bulk
-    #attr_accessor :image
+    attr_accessor :image
     attr_accessor :recommendation_count
 
     #
@@ -409,8 +410,9 @@ module Kiva
       @comments
     end
 
-    KEY  = "journal_entries"
-    LOAD = "http://api.kivaws.org/v1/loans/%s/journal_entries.json?"
+    KEY    = "journal_entries"
+    LOAD   = "http://api.kivaws.org/v1/loans/%s/journal_entries.json?"
+    SEARCH = "http://api.kivaws.org/v1/journal_entries/search.json?"
     class << self
 
       #
@@ -437,6 +439,38 @@ module Kiva
         Kiva._populate JournalEntry, unw[KEY]
 
       end 
+      
+
+       #
+      # Search for journal entries. 
+      #
+      # ====Parameters
+      # +filter+ : an instance of JournalFilter defining the search 
+      # +sort_by+ : one of  [:newest, :oldest, :recommendation_count, :comment_count]
+      # +page+ : page to load
+      # ====Returns
+      # an array of +JournalEntry+ instances.  
+      #
+      # ====Corresponds 
+      # http://developers.wiki.kiva.org/KivaAPI#journalentries/search
+      #
+  
+      def search filter, sort_by=nil, page=nil
+        url = SEARCH
+        filter ||= JournalFilter.new 
+        if sort_by && [:newest, :oldest, :recommendation_count, :comment_count].include?(sort_by)
+          filter["sort_by"]=sort_by
+        end
+
+        if page
+          filter["page"]=page
+        end
+        
+        raw  = Kiva.execute url, filter.params
+        unw = JSON.parse(raw)
+
+        Kiva._populate JournalEntry, unw[KEY]
+      end
     end
   end
   
