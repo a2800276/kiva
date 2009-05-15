@@ -1,6 +1,6 @@
-# Purpose of this file is to ensure that all the urls are reachable and the
-# Web API is returning the expected fields in the results.
-# (the web api isn't particularly stable)
+ Purpose of this file is to ensure that all the urls are reachable and the
+ Web API is returning the expected fields in the results.
+ (the web api isn't particularly stable)
 
 
 require 'test/unit'
@@ -166,17 +166,13 @@ class TestWebservice < Test::Unit::TestCase
     return unless @@run_test
     url = Kiva::LendingAction::LOAD_RECENT 
     j = JSON.parse SimpleHttp.get url
-    check_keys ["lenders"], j.keys, url
+    check_keys ["lending_actions"], j.keys, url
     
-    assert_equal Array, j["lenders"].class
-    l = j["lenders"][0]
-    keys_lender = ["loan_count", "occupation", "name", "lender_id",
-                   "country_code", "loan_because", "invitee_count", 
-                   "occupational_info", "uid", "whereabouts", "personal_url",
-                   "image", "member_since"]
+    assert_equal Array, j["lending_actions"].class
+    l = j["lending_actions"][0]
+    keys_laction = ["date", "id", "lender", "loan"]
 
-
-    check_keys keys_lender, l.keys, url
+    check_keys keys_laction, l.keys, url
 
   end
 
@@ -193,6 +189,21 @@ class TestWebservice < Test::Unit::TestCase
 
     check_keys keys, l.keys, url
   end
+
+  def test_attributes_journal_entry_search
+    return unless @@run_test
+    url = Kiva::JournalEntry::SEARCH
+    j = JSON.parse SimpleHttp.get url
+    check_keys ["journal_entries", "paging"], j.keys, url
+    
+    assert_equal Array, j["journal_entries"].class
+    l = j["journal_entries"][0]
+    keys = %w{id body date comment_count author subject bulk  recommendation_count image}
+
+    check_keys keys, l.keys, url
+
+  end
+
 
   def test_attributes_comments
     return unless @@run_test
@@ -221,6 +232,8 @@ class TestWebservice < Test::Unit::TestCase
 
     check_keys keys, l.keys, url
   end
+
+  
 
 
 end # TestWebservice

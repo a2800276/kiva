@@ -163,6 +163,35 @@ class TestKiva < Test::Unit::TestCase
     assert_equal("13775", release.id)
     assert_equal(Time.parse("Thu Mar 19 01:20:37 UTC 2009"), release.date)
   end
+  
+  #todo test loan search
+  def test_journal_entry
+    f = Kiva::JournalFilter.new.media_any
+    entries = Kiva::JournalEntry.search f
+    e = entries[0]
+    assert_equal(20, entries.length)
+    assert_equal(0, e.recommendation_count, "recommendation_count")
+    assert_equal("<p>Check out this interview with Pauline as she discusses her hopes and challanges of her new loan!</p>", e.body, "body")
+    assert_equal(false, e.bulk, "bulk")
+    assert_equal("Kristy Callahan", e.author, "author")
+    assert_equal(1, e.comment_count, "comment_count")
+    assert_equal({"template_id"=>1, "id"=>318954}, e.image, "image")
+    
+    #assert_equal("", e.comments, "comments")
+    comments = e.comments
+    c = comments[0]
+    assert_equal(1, comments.length)
+    assert_equal("Kristy, thank you so much for sharing these interviews with the Kiva lenders.  It is so gratifying to hear their stories and see their faces.  ", c.body, "body")
+    assert_equal("Suzanne Johannsen", c.author, "author")
+    assert_equal("Bend, Oregon USA", c.whereabouts, "whereabouts")
+    assert_equal("Thu May 14 03:06:11 UTC 2009", c.date.to_s, "date")
+    
+    
+
+    assert_equal("Meet Pauline!", e.subject, "subject")
+    assert_equal("Wed May 13 20:15:32 UTC 2009", e.date.to_s, "date")
+    e = entries[0]
+  end
 
   
 end

@@ -593,15 +593,24 @@ module Kiva
     end
   end
 
-  # Filter to be used in order to describe the intended search results
-  # of <code>Loan.search</code>
   class Filter
     attr_accessor :params
-
-    # Create a new instance of filter with no attributes.
     def initialize
       @params = {}
     end
+
+    def []= key, value
+      @params[key] = value
+    end
+
+    def [] key
+      @params[key]
+    end
+  end
+
+  # Filter to be used in order to describe the intended search results
+  # of <code>Loan.search</code>
+  class LoanFilter < Filter
     
     # sort_by
     def popularity
@@ -730,6 +739,48 @@ module Kiva
     
 
   end
+
+  class JournalFilter < Filter
+
+    def media_video
+      @params["media"] = "video"
+      self
+    end
+
+    def media_image
+      @params["media"] = "image"
+      self
+    end
+
+    def media_any
+      @params["media"] = "any"
+      self
+    end
+
+    def include_bulk
+      @params["include_bulk"] = "true"
+      self
+    end
+    
+    def no_include_bulk
+      @params["include_bulk"] = "false"
+      self
+    end
+
+    def partner partner
+      # if partner is an instance of Partner, extract the id,
+      # else assume (!) users are passing in a sensible id.
+      partner = partner.is_a?(Partner) ? partner.id : partner
+
+      # partners may be a list
+      @partners ||= []
+      @partners.push(partner.to_s.strip)
+      @params["partner"] = @partners.join(",")
+      self
+    end
+  end # JournalFilter
+
+ 
 
 
 end
