@@ -1,3 +1,15 @@
+= Version 0.1.14593
+=== Fri May 15 11:19:25 CEST 2009
+`Filter` is extracted, there are two classes: LoanFilter and
+JournalFilter, the previous `Filter` is now LoanFilter.
+
+now handles the `search` method of JournalEntries
+
+bugfix handling Comment loading
+
+change minor version (14593) to correspond to kiva release number
+
+
 = Version 0.1.0
 === Wed May 13 14:56:26 CEST 2009
 Updated tests to check all expected attributes and urls are 

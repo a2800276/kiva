@@ -9,7 +9,7 @@ require "rubygems"
 
 SHORTNAME	='kiva'	# this should be the rubyforge project name
 DESC		= 'wrapper to kiva api'
-PKG_VERSION 	='0.1.0'
+PKG_VERSION 	='0.1.14593'
 LONG_DESC	= <<END_DESC
 	Wrapper to the kiva web api. The API is described in
 	more detail here:

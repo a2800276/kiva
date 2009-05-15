@@ -24,8 +24,10 @@ je = Kiva::JournalEntry.load 14077
 Kiva::Comment.load(je[0])
 Kiva::Partner.load
 Kiva::Templates.load
-filter = Kiva::Filter.new.male.africa
+filter = Kiva::LoanFilter.new.male.africa
 Kiva::Loan.search filter
 Kiva::Release.load
-
+f = Kiva::JournalFilter.new.media_any
+e = Kiva::JournalEntry.search f
+e[0].comments
 pp $fixtures
